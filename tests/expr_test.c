@@ -25,6 +25,7 @@ int main(void) {
     
     ExprNode *const_node2 = expr_create_constant(8);
     ExprNode *add_node = expr_create_binary(NODE_ADD, const_node, const_node2);
+    ExprNode *sub_node = expr_create_binary(NODE_SUB, const_node, const_node2);
     ASSERT(add_node != NULL, "Addition creation");
     ASSERT(add_node->type == NODE_ADD, "Addition type");
     ASSERT(add_node->data.binary.left == const_node, "Addition left operand");

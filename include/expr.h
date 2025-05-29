@@ -3,7 +3,8 @@
 
 typedef enum {
   NODE_CONSTANT,
-  NODE_ADD
+  NODE_ADD,
+  NODE_SUB
 } NodeType;
 
 typedef struct ExprNode {

@@ -24,6 +24,25 @@ ExprNode* parse_expression(Lexer *lexer) {
         
     if (!left) return NULL;
   }
+
+  while (lexer->current_token.type == TOKEN_MINUS) {
+    TokenType op = lexer->current_token.type;
+    lexer_next_token(lexer);
+
+    ExprNode *right = parse_term(lexer);
+    if (!right) {
+      expr_unref(left);
+      return NULL;
+    }
+
+    NodeType node_type = NODE_SUB;
+    ExprNode *new_left = expr_create_binary(node_type, left, right);
+    expr_unref(left);
+    expr_unref(right);
+    left = new_left;
+
+    if (!left) return NULL;
+  }
     
   return left;
 }

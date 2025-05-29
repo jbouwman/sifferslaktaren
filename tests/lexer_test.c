@@ -18,13 +18,17 @@ int main(void) {
     
     lexer_init(&lexer, "+");
     ASSERT(lexer.current_token.type == TOKEN_PLUS, "Plus token");
-    
+
+    lexer_init(&lexer, "-");
+    ASSERT(lexer.current_token.type == TOKEN_MINUS, "Minus token");
+
     lexer_init(&lexer, "(");
     ASSERT(lexer.current_token.type == TOKEN_LPAREN, "Left paren token");
     
     lexer_init(&lexer, ")");
     ASSERT(lexer.current_token.type == TOKEN_RPAREN, "Right paren token");
-    
+
+    // Addition
     lexer_init(&lexer, "123 + 456");
     ASSERT(lexer.current_token.type == TOKEN_NUMBER, "First number");
     ASSERT(lexer.current_token.value.number == 123, "First number value");
@@ -39,6 +43,22 @@ int main(void) {
     lexer_next_token(&lexer);
     ASSERT(lexer.current_token.type == TOKEN_EOF, "EOF at end");
 
+    // Subtraction
+    lexer_init(&lexer, "123 - 456");
+    ASSERT(lexer.current_token.type == TOKEN_NUMBER, "First number");
+    ASSERT(lexer.current_token.value.number == 123, "First number value");
+
+    lexer_next_token(&lexer);
+    ASSERT(lexer.current_token.type == TOKEN_MINUS, "Minus operator");
+
+    lexer_next_token(&lexer);
+    ASSERT(lexer.current_token.type == TOKEN_NUMBER, "Second number");
+    ASSERT(lexer.current_token.value.number == 456, "Second number value");
+
+    lexer_next_token(&lexer);
+    ASSERT(lexer.current_token.type == TOKEN_EOF, "EOF at end");
+
+    //
     lexer_init(&lexer, "42$");
     ASSERT(lexer.current_token.type == TOKEN_NUMBER, "Number before error");
     
