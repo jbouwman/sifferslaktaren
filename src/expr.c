@@ -23,6 +23,10 @@ void expr_unref(ExprNode *expr) {
       expr_unref(expr->data.binary.left);
       expr_unref(expr->data.binary.right);
       break;
+    case NODE_SUB:
+      expr_unref(expr->data.binary.left);
+      expr_unref(expr->data.binary.right);
+      break;
     case NODE_CONSTANT:
       // No children to free
       break;
@@ -42,7 +46,7 @@ ExprNode* expr_create_constant(int value) {
 }
 
 ExprNode* expr_create_binary(NodeType type, ExprNode *left, ExprNode *right) {
-  if (type != NODE_ADD) {
+  if ((type != NODE_ADD) && (type != NODE_SUB)) {
     return NULL;
   }
     
@@ -64,7 +68,11 @@ int expr_evaluate(ExprNode *expr) {
     return expr->data.value;
             
   case NODE_ADD:
-    return expr_evaluate(expr->data.binary.left) + 
+    return expr_evaluate(expr->data.binary.left) +
+      expr_evaluate(expr->data.binary.right);
+
+  case NODE_SUB:
+    return expr_evaluate(expr->data.binary.left) -
       expr_evaluate(expr->data.binary.right);
                    
   default:
@@ -87,6 +95,15 @@ char* expr_to_string(ExprNode *expr) {
     char *left_str = expr_to_string(expr->data.binary.left);
     char *right_str = expr_to_string(expr->data.binary.right);
     snprintf(result, 256, "(%s + %s)", left_str, right_str);
+    free(left_str);
+    free(right_str);
+    break;
+  }
+
+  case NODE_SUB: {
+    char *left_str = expr_to_string(expr->data.binary.left);
+    char *right_str = expr_to_string(expr->data.binary.right);
+    snprintf(result, 256, "(%s - %s)", left_str, right_str);
     free(left_str);
     free(right_str);
     break;

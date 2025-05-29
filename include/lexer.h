@@ -4,6 +4,7 @@
 typedef enum {
     TOKEN_NUMBER,
     TOKEN_PLUS,        // +
+    TOKEN_MINUS,       // -
     TOKEN_LPAREN,      // (
     TOKEN_RPAREN,      // )
     TOKEN_EOF,         // End of input

@@ -45,6 +45,10 @@ void lexer_next_token(Lexer *lexer) {
             lexer->current_token.type = TOKEN_PLUS;
             lexer->position++;
             break;
+        case '-':
+            lexer->current_token.type = TOKEN_MINUS;
+            lexer->position++;
+            break;
         case '(':
             lexer->current_token.type = TOKEN_LPAREN;
             lexer->position++;

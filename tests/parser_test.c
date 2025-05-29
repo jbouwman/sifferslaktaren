@@ -20,16 +20,28 @@ int main(void) {
     ASSERT(expr->data.binary.left->data.value == 5, "Addition left value");
     ASSERT(expr->data.binary.right->type == NODE_CONSTANT, "Addition right type");
     ASSERT(expr->data.binary.right->data.value == 3, "Addition right value");
-    
-    int result = expr_evaluate(expr);
-    ASSERT(result == 8, "Addition evaluation");
+
+    int add_result = expr_evaluate(expr);
+    ASSERT(add_result == 8, "Addition evaluation");
+    expr_unref(expr);
+
+    expr = parse_string("5 - 3");
+    ASSERT(expr != NULL, "Parse simple subtraction");
+    ASSERT(expr->type == NODE_SUB, "Subtraction type");
+    ASSERT(expr->data.binary.left->type == NODE_CONSTANT, "Subtraction left type");
+    ASSERT(expr->data.binary.left->data.value == 5, "Subtraction left value");
+    ASSERT(expr->data.binary.right->type == NODE_CONSTANT, "Subtraction right type");
+    ASSERT(expr->data.binary.right->data.value == 3, "Subtraction right value");
+
+    int sub_result = expr_evaluate(expr);
+    ASSERT(sub_result == 2, "Subtraction evaluation");
     expr_unref(expr);
     
     expr = parse_string("(5 + 3)");
     ASSERT(expr != NULL, "Parse parentheses");
     ASSERT(expr->type == NODE_ADD, "Parentheses type");
     
-    result = expr_evaluate(expr);
+    int result = expr_evaluate(expr);
     ASSERT(result == 8, "Parentheses evaluation");
     expr_unref(expr);
 
