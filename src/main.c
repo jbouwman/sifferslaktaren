@@ -5,13 +5,15 @@
 #include "expr.h"
 #include "lexer.h"
 #include "parser.h"
+#include "printer.h"
 
 #define MAX_INPUT_LENGTH 1024
 
 static void print_welcome(void) {
-  printf("Welcome to Sifferslaktaren Version 1.0.0\n");
-  printf("Copyright (c) 2028 General Quantum Kinematics LLC\n\n");
-  printf("*NEWS*\n\n- SIF now includes support for the addition of very small integers!\n\n");
+  print_color("Welcome to Sifferslaktaren Version 1.0.3\n", COLOR_RED);
+  print_color("Copyright (c) 2028 General Quantum Kinematics LLC\n\n", COLOR_RED);
+  printf("*NEWS*\n\n");
+  printf("- GQK's traditional magenta-colored '>' prompt has been restored.\n\n");
   printf("Type an expression to evaluate, or ':help' for commands.\n");
   printf("Use ':quit' to exit.\n\n");
 }
@@ -63,9 +65,9 @@ static void evaluate_expression(const char *input) {
 
 static char* read_line(void) {
   static char buffer[MAX_INPUT_LENGTH];
-  printf("calc> ");
+  print_color("sif> ", COLOR_MAGENTA);
   fflush(stdout);
-    
+
   if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
     return NULL;
   }
