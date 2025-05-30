@@ -15,7 +15,8 @@ MAIN_SRCS = src/main.c
 # Library module sources
 LIB_SRCS = src/expr.c \
 	src/lexer.c \
-	src/parser.c
+	src/parser.c \
+        src/printer.c
 
 # Test sources
 TEST_SRCS = tests/expr_test.c \
