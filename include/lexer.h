@@ -2,26 +2,26 @@
 #define LEXER_H
 
 typedef enum {
-    TOKEN_NUMBER,
-    TOKEN_PLUS,        // +
-    TOKEN_MINUS,       // -
-    TOKEN_LPAREN,      // (
-    TOKEN_RPAREN,      // )
-    TOKEN_EOF,         // End of input
-    TOKEN_ERROR
+  TOKEN_NUMBER,
+  TOKEN_PLUS,        // +
+  TOKEN_MINUS,       // -
+  TOKEN_LPAREN,      // (
+  TOKEN_RPAREN,      // )
+  TOKEN_EOF,         // End of input
+  TOKEN_ERROR
 } TokenType;
 
 typedef struct {
-    TokenType type;
-    union {
-        int number;
-    } value;
+  TokenType type;
+  union {
+    int number;
+  } value;
 } Token;
 
 typedef struct {
-    const char *input;
-    int position;
-    Token current_token;
+  const char *input;
+  int position;
+  Token current_token;
 } Lexer;
 
 void lexer_init(Lexer *lexer, const char *input);
