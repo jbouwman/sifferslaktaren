@@ -21,7 +21,8 @@ LIB_SRCS = src/expr.c \
 # Test sources
 TEST_SRCS = tests/expr_test.c \
 	tests/lexer_test.c \
-	tests/parser_test.c
+	tests/parser_test.c \
+	tests/evaluation_test.c
 
 # Object files
 LIB_OBJS = $(LIB_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

@@ -21,22 +21,52 @@ int main(void) {
   ASSERT_STRCMP(str, "42", "Constant string");
   free(str);
 
+  // Test operations
+  
+  ExprNode *const_node2 = expr_create_constant(8);
+  ExprNode *operation_node;
+  
   // Addition
     
-  ExprNode *const_node2 = expr_create_constant(8);
-  ExprNode *add_node = expr_create_binary(NODE_ADD, const_node, const_node2);
-  ExprNode *sub_node = expr_create_binary(NODE_SUB, const_node, const_node2);
-  ASSERT(add_node != NULL, "Addition creation");
-  ASSERT(add_node->type == NODE_ADD, "Addition type");
-  ASSERT(add_node->data.binary.left == const_node, "Addition left operand");
-  ASSERT(add_node->data.binary.right == const_node2, "Addition right operand");
+  operation_node = expr_create_binary(NODE_ADD, const_node, const_node2);
+
+  ASSERT(operation_node != NULL,
+         "Addition creation");
+  ASSERT(operation_node->type == NODE_ADD,
+         "Addition type");
+  ASSERT(operation_node->data.binary.left == const_node,
+         "Addition left operand");
+  ASSERT(operation_node->data.binary.right == const_node2,
+         "Addition right operand");
     
-  result = expr_evaluate(add_node);
+  result = expr_evaluate(operation_node);
   ASSERT(result == 50, "Addition evaluation");
-    
-  str = expr_to_string(add_node);
+
+  str = expr_to_string(operation_node);
   ASSERT_STRCMP(str, "(42 + 8)", "Addition string representation");
+
   free(str);
+
+  // Subtraction
     
+  operation_node = expr_create_binary(NODE_SUB, const_node, const_node2);
+
+  ASSERT(operation_node != NULL,
+         "Subtraction creation");
+  ASSERT(operation_node->type == NODE_SUB,
+         "Subtraction type");
+  ASSERT(operation_node->data.binary.left == const_node,
+         "Subtraction left operand");
+  ASSERT(operation_node->data.binary.right == const_node2,
+         "Subtraction right operand");
+    
+  result = expr_evaluate(operation_node);
+  ASSERT(result == 34, "Subtraction evaluation");
+
+  str = expr_to_string(operation_node);
+  ASSERT_STRCMP(str, "(42 - 8)", "Subtraction string representation");
+
+  free(str);
+  
   return EXIT_SUCCESS;
 }
