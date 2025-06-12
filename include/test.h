@@ -25,4 +25,7 @@
     }                                                           \
   } while (0)
 
+#define TOKEN_IS_INTEGER(value, integer)                        \
+  rational_equals(value.number, rational_create(integer, 1))
+
 #endif /* TEST_H */

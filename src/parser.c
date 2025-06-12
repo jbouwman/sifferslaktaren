@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "parser.h"
 
+#include "rational.h"
+
 ExprNode* parse_expression(Lexer *lexer) {
   ExprNode *left = parse_term(lexer);
   if (!left) return NULL;
@@ -53,7 +55,7 @@ ExprNode* parse_term(Lexer *lexer) {
 
 ExprNode* parse_factor(Lexer *lexer) {
   if (lexer->current_token.type == TOKEN_NUMBER) {
-    int value = lexer->current_token.value.number;
+    Rational value = lexer->current_token.value.number;
     lexer_next_token(lexer);
     return expr_create_constant(value);
   }

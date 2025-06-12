@@ -1,6 +1,8 @@
 #ifndef EXPR_H
 #define EXPR_H
 
+#include "rational.h"
+
 typedef enum {
   NODE_CONSTANT,
   NODE_ADD,
@@ -10,7 +12,7 @@ typedef enum {
 typedef struct ExprNode {
   NodeType type;
   union {
-    int value;
+    Rational value;
     struct {
       struct ExprNode *left;
       struct ExprNode *right;
@@ -22,10 +24,10 @@ typedef struct ExprNode {
 ExprNode* expr_ref(ExprNode *expr);
 void expr_unref(ExprNode *expr);
 
-ExprNode* expr_create_constant(int value);
+ExprNode* expr_create_constant(Rational value);
 ExprNode* expr_create_binary(NodeType type, ExprNode *left, ExprNode *right);
 
 char* expr_to_string(ExprNode *expr);
-int expr_evaluate(ExprNode *expr);
+Rational expr_evaluate(ExprNode *expr);
 
 #endif /* EXPR_H */

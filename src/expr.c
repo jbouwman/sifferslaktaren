@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "expr.h"
+#include "rational.h"
 
 // Memory management
 
@@ -35,7 +36,7 @@ void expr_unref(ExprNode *expr) {
   }
 }
 
-ExprNode* expr_create_constant(int value) {
+ExprNode* expr_create_constant(Rational value) {
   ExprNode *node = malloc(sizeof(ExprNode));
   if (!node) return NULL;
     
@@ -60,23 +61,24 @@ ExprNode* expr_create_binary(NodeType type, ExprNode *left, ExprNode *right) {
   return node;
 }
 
-int expr_evaluate(ExprNode *expr) {
-  if (!expr) return 0;
+Rational expr_evaluate(ExprNode *expr) {
+  if (!expr)
+    return rational_create(0, 1);
     
   switch (expr->type) {
   case NODE_CONSTANT:
     return expr->data.value;
             
   case NODE_ADD:
-    return expr_evaluate(expr->data.binary.left) +
-      expr_evaluate(expr->data.binary.right);
+    return rational_add(expr_evaluate(expr->data.binary.left),
+                        expr_evaluate(expr->data.binary.right));
 
   case NODE_SUB:
-    return expr_evaluate(expr->data.binary.left) -
-      expr_evaluate(expr->data.binary.right);
+    return rational_subtract(expr_evaluate(expr->data.binary.left),
+                             expr_evaluate(expr->data.binary.right));
                    
   default:
-    return 0;
+    return rational_create(0, 1);
   }
 }
 
