@@ -3,6 +3,7 @@
 #include <string.h>
 #include "test.h"
 #include "lexer.h"
+#include "rational.h"
 
 int main(void) {
   printf("test: lexer\n");
@@ -11,7 +12,7 @@ int main(void) {
 
   lexer_init(&lexer, "42");
   ASSERT(lexer.current_token.type == TOKEN_NUMBER, "Number token type");
-  ASSERT(lexer.current_token.value.number == 42, "Number token value");
+  ASSERT(TOKEN_IS_INTEGER(lexer.current_token, 42), "Number token value");
     
   lexer_next_token(&lexer);
   ASSERT(lexer.current_token.type == TOKEN_EOF, "EOF after number");
@@ -31,14 +32,14 @@ int main(void) {
   // Addition
   lexer_init(&lexer, "123 + 456");
   ASSERT(lexer.current_token.type == TOKEN_NUMBER, "First number");
-  ASSERT(lexer.current_token.value.number == 123, "First number value");
+  ASSERT(TOKEN_IS_INTEGER(lexer.current_token, 123), "First number value");
     
   lexer_next_token(&lexer);
   ASSERT(lexer.current_token.type == TOKEN_PLUS, "Plus operator");
     
   lexer_next_token(&lexer);
   ASSERT(lexer.current_token.type == TOKEN_NUMBER, "Second number");
-  ASSERT(lexer.current_token.value.number == 456, "Second number value");
+  ASSERT(TOKEN_IS_INTEGER(lexer.current_token, 456), "Second number value");
     
   lexer_next_token(&lexer);
   ASSERT(lexer.current_token.type == TOKEN_EOF, "EOF at end");
@@ -46,14 +47,14 @@ int main(void) {
   // Subtraction
   lexer_init(&lexer, "123 - 456");
   ASSERT(lexer.current_token.type == TOKEN_NUMBER, "First number");
-  ASSERT(lexer.current_token.value.number == 123, "First number value");
+  ASSERT(TOKEN_IS_INTEGER(lexer.current_token, 123), "First number value");
 
   lexer_next_token(&lexer);
   ASSERT(lexer.current_token.type == TOKEN_MINUS, "Minus operator");
 
   lexer_next_token(&lexer);
   ASSERT(lexer.current_token.type == TOKEN_NUMBER, "Second number");
-  ASSERT(lexer.current_token.value.number == 456, "Second number value");
+  ASSERT(TOKEN_IS_INTEGER(lexer.current_token, 456), "Second number value");
 
   lexer_next_token(&lexer);
   ASSERT(lexer.current_token.type == TOKEN_EOF, "EOF at end");

@@ -1,6 +1,5 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include <string.h>
 #include "lexer.h"
 
 void lexer_init(Lexer *lexer, const char *input) {
@@ -9,59 +8,82 @@ void lexer_init(Lexer *lexer, const char *input) {
   lexer_next_token(lexer);
 }
 
-static void skip_whitespace(Lexer *lexer) {
-  while (lexer->input[lexer->position] && isspace(lexer->input[lexer->position])) {
-    lexer->position++;
-  }
+int is_digit(char c) {
+  return c >= '0' && c <= '9';
 }
 
-static int read_number(Lexer *lexer) {
-  int value = 0;
-  while (isdigit(lexer->input[lexer->position])) {
-    value = value * 10 + (lexer->input[lexer->position] - '0');
+void skip_whitespace(Lexer *lexer) {
+  while (lexer->input[lexer->position] == ' ' || 
+         lexer->input[lexer->position] == '\t' || 
+         lexer->input[lexer->position] == '\n' || 
+         lexer->input[lexer->position] == '\r') {
     lexer->position++;
   }
-  return value;
 }
 
 void lexer_next_token(Lexer *lexer) {
   skip_whitespace(lexer);
     
-  char current_char = lexer->input[lexer->position];
+  char c = lexer->input[lexer->position];
     
-  if (current_char == '\0') {
+  
+  if (c == '\0') {
     lexer->current_token.type = TOKEN_EOF;
     return;
   }
-    
-  if (isdigit(current_char)) {
-    lexer->current_token.type = TOKEN_NUMBER;
-    lexer->current_token.value.number = read_number(lexer);
-    return;
-  }
-    
-  switch (current_char) {
+  
+  switch (c) {
   case '+':
     lexer->current_token.type = TOKEN_PLUS;
     lexer->position++;
-    break;
+    return;
   case '-':
     lexer->current_token.type = TOKEN_MINUS;
     lexer->position++;
-    break;
+    return;
   case '(':
     lexer->current_token.type = TOKEN_LPAREN;
     lexer->position++;
-    break;
+    return;
   case ')':
     lexer->current_token.type = TOKEN_RPAREN;
     lexer->position++;
-    break;
-  default:
-    lexer->current_token.type = TOKEN_ERROR;
-    lexer->position++;
-    break;
+    return;
   }
+  
+  if (is_digit(c)) {
+    int start = lexer->position;
+    long numerator = 0;
+        
+    
+    while (is_digit(lexer->input[lexer->position])) {
+      numerator = numerator * 10 + (lexer->input[lexer->position] - '0');
+      lexer->position++;
+    }
+        
+    if (lexer->input[lexer->position] == '.') {
+      lexer->position++; 
+      
+      long denominator = 1;
+      while (is_digit(lexer->input[lexer->position])) {
+        numerator = numerator * 10 + (lexer->input[lexer->position] - '0');
+        denominator *= 10;
+        lexer->position++;
+      }
+      
+      lexer->current_token.type = TOKEN_NUMBER;
+      lexer->current_token.value.number = rational_create(numerator, denominator);
+    } else {
+      
+      lexer->current_token.type = TOKEN_NUMBER;
+      lexer->current_token.value.number = rational_create(numerator, 1);
+    }
+        
+    return;
+  }
+  
+  lexer->current_token.type = TOKEN_ERROR;
+  lexer->position++;
 }
 
 void token_free(Token *token) {

@@ -1,6 +1,8 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include "rational.h"
+
 typedef enum {
   TOKEN_NUMBER,
   TOKEN_PLUS,        // +
@@ -14,7 +16,7 @@ typedef enum {
 typedef struct {
   TokenType type;
   union {
-    int number;
+    Rational number;
   } value;
 } Token;
 
@@ -26,6 +28,10 @@ typedef struct {
 
 void lexer_init(Lexer *lexer, const char *input);
 void lexer_next_token(Lexer *lexer);
+void skip_whitespace(Lexer *lexer);
+
 void token_free(Token *token);
+
+int is_digit(char c);
 
 #endif /* LEXER_H */

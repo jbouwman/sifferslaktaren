@@ -3,6 +3,7 @@
 #include <string.h>
 #include "test.h"
 #include "parser.h"
+#include "rational.h"
 
 int main(void) {
   printf("test: parser\n");

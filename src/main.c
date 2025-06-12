@@ -53,9 +53,9 @@ static bool handle_command(const char *input) {
 static void evaluate_expression(const char *input) {
   ExprNode *expr = parse_string(input);
   if (expr) {
-    int result = expr_evaluate(expr);
+    Rational result = expr_evaluate(expr);
     char *str = expr_to_string(expr);
-    printf("%s = %d\n", str, result);
+    printf("%s = %s\n", str, rational_to_string(result));
     free(str);
     expr_unref(expr);
   } else {
