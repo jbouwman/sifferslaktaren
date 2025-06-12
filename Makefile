@@ -16,12 +16,14 @@ MAIN_SRCS = src/main.c
 LIB_SRCS = src/expr.c \
 	src/lexer.c \
 	src/parser.c \
-        src/printer.c
+        src/printer.c \
+	src/rational.c
 
 # Test sources
 TEST_SRCS = tests/expr_test.c \
 	tests/lexer_test.c \
-	tests/parser_test.c
+	tests/parser_test.c \
+	tests/rational_test.c
 
 # Object files
 LIB_OBJS = $(LIB_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
